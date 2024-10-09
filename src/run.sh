@@ -1,0 +1,21 @@
+CUDA_VISIBLE_DEVICES=7,6,5,4,3,2,1,0 torchrun --nproc_per_node=8 --master_port=20213 sft_minicpm.py  \
+        --model_name_or_path /model/MiniCPM-2B-sft-bf16-llama-format \
+        --bf16 True \
+        --output_dir /output/rel_extraction_2d \
+        --model_max_length 4096 \
+        --use_flash_attn True \
+        --data_path /data/rel_extraction_train_62954.json \
+        --low_rank_training False \
+        --num_train_epochs 2  \
+        --per_device_train_batch_size 2     \
+        --gradient_accumulation_steps 4     \
+        --evaluation_strategy "no"     \
+        --save_strategy "epoch"     \
+        --save_total_limit 1     \
+        --learning_rate 2e-5     \
+        --weight_decay 0.0     \
+        --warmup_ratio 0.03     \
+        --lr_scheduler_type "cosine"     \
+        --logging_steps 10     \
+        --deepspeed ds_configs/stage2.json \
+        --tf32 True
